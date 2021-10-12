@@ -1,10 +1,15 @@
 package es.sanzcopacabana.beerfinder.ui.main
 
+import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import es.sanzcopacabana.beerfinder.R
@@ -33,6 +38,24 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setObservers()
+        setListeners()
+    }
+
+    private fun setListeners(){
+        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                hideKeyboard()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Log.i("query -> ", newText.toString())
+                mainViewModel.getBeers(if (newText?.isNotEmpty() == true) newText else null)
+                return true
+            }
+
+        })
     }
 
     private fun setObservers(){
@@ -48,6 +71,11 @@ class MainFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun hideKeyboard() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
 }
