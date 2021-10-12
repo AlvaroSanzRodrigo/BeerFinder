@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import es.sanzcopacabana.beerfinder.R
 import es.sanzcopacabana.beerfinder.databinding.MainFragmentBinding
 import es.sanzcopacabana.beerfinder.model.BeerResponse
+import es.sanzcopacabana.beerfinder.ui.beerDetails.BeerDetailsDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainFragment : Fragment() {
@@ -32,13 +33,9 @@ class MainFragment : Fragment() {
     ): View {
         return MainFragmentBinding.inflate(inflater).apply {
             binding = this
+            setObservers()
+            setListeners()
         }.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setObservers()
-        setListeners()
     }
 
     private fun setListeners(){
@@ -46,11 +43,11 @@ class MainFragment : Fragment() {
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 hideKeyboard()
+                binding.searchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                Log.i("query -> ", newText.toString())
                 mainViewModel.getBeers(if (newText?.isNotEmpty() == true) newText else null)
                 return true
             }
@@ -65,7 +62,7 @@ class MainFragment : Fragment() {
                     layoutManager = GridLayoutManager(this@MainFragment.context, 2)
                     adapter = BeerAdapter(it, object : BeerAdapter.OnClickedItemListener {
                         override fun onItemSelected(beer: BeerResponse) {
-
+                            BeerDetailsDialog(beer).show(this@MainFragment.childFragmentManager, "Beer")
                         }
                     })
                 }

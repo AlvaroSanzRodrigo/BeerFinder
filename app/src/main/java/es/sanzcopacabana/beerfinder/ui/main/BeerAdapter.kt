@@ -30,7 +30,7 @@ class BeerAdapter(var items: List<BeerResponse>, private val mCallBack: OnClicke
             mCallBack.onItemSelected(items[position])
         }
         holder.binding.textViewBeerName.text = items[position].name
-        holder.binding.textViewBeerTagLine.text = items[position].tagline
+        holder.binding.textViewBeerTagLine.text = items[position].tagLine
         Glide.with(holder.binding.imageView.context)
             .load(items[position].imageUrl)
             .placeholder(R.drawable.ic_beer_placeholder)
