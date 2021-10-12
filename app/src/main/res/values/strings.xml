@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BeerFinder</string>
+    <string name="alcohol_by_volume">Alcohol by volume:</string>
+    <string name="beerimage_alt">BeerImage</string>
 </resources>
