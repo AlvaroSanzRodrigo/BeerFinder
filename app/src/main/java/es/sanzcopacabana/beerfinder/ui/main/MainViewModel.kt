@@ -15,12 +15,12 @@ class MainViewModel(private val beerRepository: BeerRepository) : ViewModel() {
     val beers: LiveData<List<BeerResponse>> = _beers
 
     init {
-        getBeers()
+        getBeers(null)
     }
 
-    fun getBeers(){
+    fun getBeers(query: String?){
         CoroutineScope(Dispatchers.IO).launch {
-            beerRepository.getBeers("").apply {
+            beerRepository.getBeers(query).apply {
                 if (this != null)
                     _beers.postValue(this)
             }

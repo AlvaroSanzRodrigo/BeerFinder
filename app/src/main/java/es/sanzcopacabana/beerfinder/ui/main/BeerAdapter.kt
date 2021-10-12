@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import es.sanzcopacabana.beerfinder.R
 import es.sanzcopacabana.beerfinder.databinding.BeerItemBinding
 import es.sanzcopacabana.beerfinder.model.BeerResponse
 
@@ -30,7 +31,10 @@ class BeerAdapter(var items: List<BeerResponse>, private val mCallBack: OnClicke
         }
         holder.binding.textViewBeerName.text = items[position].name
         holder.binding.textViewBeerTagLine.text = items[position].tagline
-        Glide.with(holder.binding.imageView.context).load(items[position].imageUrl).into(holder.binding.imageView);
+        Glide.with(holder.binding.imageView.context)
+            .load(items[position].imageUrl)
+            .placeholder(R.drawable.ic_beer_placeholder)
+            .into(holder.binding.imageView)
     }
 
     override fun getItemCount() = items.size
